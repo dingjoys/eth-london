@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./base64.sol";
 
+error Soulbound();
+
 contract MetoBadge is ERC1155, Ownable {
     constructor()
         ERC1155("https://token-cdn-domain/{id}.json")
@@ -92,5 +94,35 @@ contract MetoBadge is ERC1155, Ownable {
             );
     }
 
-    function ethBalance() public {}
+
+    /**
+     * @notice SOULBOUND: Block transfers.
+     */
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId,
+        uint256 batchSize
+    ) internal virtual override {
+        require(from == address(0) || to == address(0), "nontransferable");
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+
+    /**
+     * @notice SOULBOUND: Block approvals.
+     */
+    function setApprovalForAll(
+        address operator,
+        bool _approved
+    ) public virtual override {
+        revert Soulbound();
+    }
+
+    /**
+     * @notice SOULBOUND: Block approvals.
+     */
+    function approve(address to, uint256 tokenId) public virtual override {
+        revert Soulbound();
+    }
+
 }

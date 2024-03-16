@@ -5,6 +5,11 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noImplicitAny": false /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "ignoreDeprecations": "5.0",
+    "suppressImplicitAnyIndexErrors": true
   }
 }

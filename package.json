@@ -10,7 +10,16 @@
     "create-react-app": "^5.0.1",
     "dotenv": "^16.4.5",
     "hardhat": "^2.17.4",
-    "koa": "^2.15.1",
+    "kcors": "^2.2.2",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-convert": "^1.2.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.0",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "log4js": "^6.9.1",
     "request-promise": "^4.2.6"
   },
   "devDependencies": {
