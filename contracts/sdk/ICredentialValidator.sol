@@ -2,5 +2,8 @@
 pragma solidity ^0.8.0;
 
 abstract contract ICredentialValidator {
-    function validate(address owner) public virtual returns (bool);
+    function validate(
+        address proxy,
+        uint requirements
+    ) public view virtual returns (bool);
 }

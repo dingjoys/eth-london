@@ -2,30 +2,30 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "../sdk/ICredValidatorConsumer.sol";
+import "../sdk/ICredentialValidator.sol";
 
-contract ITOAsset is ERC20("IFO ASSET", "ASS"), ICredValidatorConsumer {
-    bytes32 private _requirement;
+contract ITOAsset is ERC20("IFO ASSET", "ASS") {
+    address private VALIDATOR_ADDR = address(0);
+    uint private CREDENTIAL_REQUIREMENT =
+        0x0000000000000000000000000000000000000000000000000000000000000001;
+
+    uint private _requirements;
     ICredentialValidator credentialValidator;
 
-    constructor(bytes32 requirement_, address validatorAddr_) {
-    }
-
     modifier validated() {
-        require(credentialValidator.validate(msg.sender), "invalidated");
+        require(
+            credentialValidator.validate(msg.sender, _requirements),
+            "invalidated"
+        );
         _;
     }
 
-    address private VALIDATOR_ADDR = "";
-    bytes32 private CREDENTIAL_REQUIREMENT =
-        0x0000000000000000000000000000000000000000000000000000000000000001;
-
     constructor() {
-        _requirement = CREDENTIAL_REQUIREMENT;
+        _requirements = CREDENTIAL_REQUIREMENT;
         credentialValidator = ICredentialValidator(VALIDATOR_ADDR);
     }
 
-    function swap(amount) public payable validated{
+    function swap(uint amount) public payable validated {
         // do something
     }
 }

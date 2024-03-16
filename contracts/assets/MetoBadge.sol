@@ -4,15 +4,19 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "./base64.sol";
+import "../lib/base64.sol";
+import "../sdk/ICredentialValidator.sol";
 
 error Soulbound();
 
+/**
+ * TODO - add multiple wallet support
+ *
+ */
 contract MetoBadge is ERC1155, Ownable, ICredentialValidator {
-    constructor()
-        ERC1155("https://token-cdn-domain/{id}.json")
-        Ownable(msg.sender)
-    {}
+    constructor() ERC1155("https://domain/{id}.json") Ownable(msg.sender) {
+        credentialKeys[0] = "Holonym Verified";
+    }
 
     /**
      * Indexed identity Keys; store up to 256 credentials
@@ -22,47 +26,67 @@ contract MetoBadge is ERC1155, Ownable, ICredentialValidator {
     /**
      * Identity value mapping
      */
-    mapping(uint => bytes32) public credentials;
+    mapping(uint => uint) public credentials;
 
     /**
      * owner => walletId
      */
-    mapping(address => address) public connections;
+    mapping(address => address) public proxies;
 
-    function mintTo(
-        address owner_,
-        address walletId,
-        bytes32 data
-    ) public onlyOwner {
-        require(connections[owner_] == address(0), "minted");
+    function mintTo(address owner_, address proxy, uint data) public onlyOwner {
+        require(proxies[owner_] == address(0), "minted");
         // require(
-        //     owner() == msg.sender || connections[owner_] == walletId,
+        //     owner() == msg.sender || holdings[owner_] == walletId,
         //     "not authorized"
         // );
-        uint id = uint256(uint160(walletId));
+        uint id = uint256(uint160(proxy));
         _mint(owner_, id, 1, "");
         credentials[id] = data;
+        proxies[owner_] = proxy;
     }
 
-    function submit(address walletId, bytes32 credential_) public onlyOwner {
-        uint id = uint256(uint160(walletId));
+    function validate(
+        address proxy,
+        uint requirements
+    ) public view override returns (bool) {
+        return
+            credentials[uint256(uint160(proxy))] & requirements == requirements;
+    }
+
+    function submit(address proxy, uint credential_) public onlyOwner {
+        uint id = uint256(uint160(proxy));
         credentials[id] = credential_;
     }
 
-    function update(uint id, bytes32 identity) public {}
+    function generateSVG(uint id) public view returns (string memory) {
+        string
+            memory buff = '<svg xmlns="http://www.w3.org/2000/svg" width="606.2" height="819.4" viewBox="0 0 606.2 819.4" style="background-color: black;"><text fill="#ffffff">';
+        buff = string(
+            abi.encodePacked(
+                buff,
+                '<tspan x="20" y="30">Proxy: ',
+                Strings.toHexString(uint160(id), 20),
+                "</tspan>"
+            )
+        );
+        uint tmp = credentials[id];
+        for (uint8 i = 0; tmp > 0 && i < 255; i++) {
+            if (tmp & 1 > 0) {
+                buff = string(
+                    abi.encodePacked(
+                        buff,
+                        '<tspan x="20" y="',
+                        Strings.toString(20 * i + 50),
+                        '">',
+                        credentialKeys[i],
+                        "</tspan>"
+                    )
+                );
+            }
+            tmp >>= 1;
+        }
 
-    function generateSVG(uint id) private view returns (string memory) {
-        return
-            string(
-                abi.encodePacked(
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="606.2" height="819.4" viewBox="0 0 606.2 819.4">',
-                    "<text>",
-                    '<tspan x="20" y="20">something1</tspan>',
-                    '<tspan x="20" y="40">something2</tspan>',
-                    "</text>",
-                    "</svg>"
-                )
-            );
+        return string(abi.encodePacked(buff, "</text></svg>"));
     }
 
     /**
@@ -96,32 +120,30 @@ contract MetoBadge is ERC1155, Ownable, ICredentialValidator {
     }
 
     /**
-     * @notice SOULBOUND: Block transfers.
+     * SOULBOUNDed
      */
-    function _beforeTokenTransfer(
+    function safeTransferFrom(
         address from,
         address to,
-        uint256 tokenId,
-        uint256 batchSize
-    ) internal virtual override {
-        require(from == address(0) || to == address(0), "nontransferable");
-        super._beforeTokenTransfer(from, to, tokenId, batchSize);
-    }
-
-    /**
-     * @notice SOULBOUND: Block approvals.
-     */
-    function setApprovalForAll(
-        address operator,
-        bool _approved
+        uint256 id,
+        uint256 value,
+        bytes memory data
     ) public virtual override {
-        revert Soulbound();
+        require(from == address(0) || to == address(0), "nontransferable");
+        super._safeTransferFrom(from, to, id, value, data);
     }
 
     /**
-     * @notice SOULBOUND: Block approvals.
+     * SOULBOUNDed
      */
-    function approve(address to, uint256 tokenId) public virtual override {
-        revert Soulbound();
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory values,
+        bytes memory data
+    ) public virtual override {
+        require(from == address(0) || to == address(0), "nontransferable");
+        super._safeBatchTransferFrom(from, to, ids, values, data);
     }
 }

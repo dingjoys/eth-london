@@ -1,14 +1,23 @@
 import { deploySafeWallet as deploySafeWallet } from "./safeSdk/deploy-safe"
 
+/**
+ * require "ethers": "6.8.1",
+ */
+
 export type Account = {
     owner,
     safeAddress,
-    balance,
+    safeBalance,
     credentials
 }
 
 const accountMap: any = {
-
+    "0x622ee91c3b4841c54670120948cd91c2603353a2": {
+        owner: "0x622ee91c3b4841c54670120948cd91c2603353a2",
+        safeAddress: "0x559527a6D82Ac336821F2082c1cda49A4eB63588",
+        safeBalance: "",
+        credentials: 1
+    }
 }
 
 
@@ -40,13 +49,18 @@ export const getAccount = (owner: string) => {
  */
 export const createAccount = async (_owner) => {
     let owner = _owner.toLowerCase()
-    const safeWalletAddress = await deploySafeWallet(owner);
-    const credentials = await validate(owner);
-    const account = {
-        owner,
-        safeAddress: safeWalletAddress,
-        credentials: credentials
+    let account = accountMap[owner]
+    if (!account) {
+        const safeWalletAddress = await deploySafeWallet(owner);
+        const credentials = await validate(owner);
+        const account = {
+            owner,
+            safeAddress: safeWalletAddress,
+            credentials: credentials,
+            safeBalance: ""
+        }
+        accountMap[owner] = account
     }
-    accountMap[owner] = account
+    
     return account
 }
