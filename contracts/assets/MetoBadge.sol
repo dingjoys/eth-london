@@ -4,12 +4,13 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "./base64.sol";
 
-contract MetoBadge is ERC1155 {
-    constructor() ERC1155("https://token-cdn-domain/{id}.json") {
-        _mint(msg.sender, 1, 10, "");
-        _mint(msg.sender, 2, 20, "");
-    }
+contract MetoBadge is ERC1155, Ownable {
+    constructor()
+        ERC1155("https://token-cdn-domain/{id}.json")
+        Ownable(msg.sender)
+    {}
 
     /**
      * Indexed identity Keys; store up to 256 credentials
@@ -42,14 +43,14 @@ contract MetoBadge is ERC1155 {
     }
 
     function submit(address walletId, bytes32 credential_) public onlyOwner {
-        credentials[walletId] = credential_;
+        uint id = uint256(uint160(walletId));
+        credentials[id] = credential_;
     }
 
     function update(uint id, bytes32 identity) public {}
 
     function generateSVG(uint id) private view returns (string memory) {
-        return
-            bytes.concat(
+        return string(
                 abi.encodePacked(
                     '<svg xmlns="http://www.w3.org/2000/svg" width="606.2" height="819.4" viewBox="0 0 606.2 819.4">',
                     "<text>",
