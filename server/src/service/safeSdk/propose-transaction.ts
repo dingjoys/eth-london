@@ -22,7 +22,7 @@ const config: Config = {
 }
 
 export async function proposeSafeTx() {
-  const provider = new ethers.providers.JsonRpcProvider(config.RPC_URL)
+  const provider = new ethers.JsonRpcProvider(config.RPC_URL)
   const signer = new ethers.Wallet(config.SIGNER_ADDRESS_PRIVATE_KEY, provider)
 
   // Create EthAdapter instance

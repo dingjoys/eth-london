@@ -6,7 +6,9 @@ import logger from 'koa-logger';
 import onerror from 'koa-onerror';
 import accountRouter from './router/accountRouter';
 import frameRouter from './router/frameRouter';
-
+require('dotenv').config()
+// export const privatekey = process.env.PRIVATE_KEY as string
+// console.log(privatekey)
 const app = new Koa();
 
 app.use(async (ctx, next) => {
