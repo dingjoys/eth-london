@@ -6,6 +6,7 @@ async function main() {
 	);
 	const metobadge = await MetobadgeContract.deploy();
 	await metobadge.deployed();
+	// require "ethers": "5.7.2",
 	const address = metobadge.address;
 	console.log(`badge nft deployed to ${address}`);
 

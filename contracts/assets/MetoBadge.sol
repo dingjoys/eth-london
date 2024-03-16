@@ -8,7 +8,7 @@ import "./base64.sol";
 
 error Soulbound();
 
-contract MetoBadge is ERC1155, Ownable {
+contract MetoBadge is ERC1155, Ownable, ICredentialValidator {
     constructor()
         ERC1155("https://token-cdn-domain/{id}.json")
         Ownable(msg.sender)
@@ -52,7 +52,8 @@ contract MetoBadge is ERC1155, Ownable {
     function update(uint id, bytes32 identity) public {}
 
     function generateSVG(uint id) private view returns (string memory) {
-        return string(
+        return
+            string(
                 abi.encodePacked(
                     '<svg xmlns="http://www.w3.org/2000/svg" width="606.2" height="819.4" viewBox="0 0 606.2 819.4">',
                     "<text>",
@@ -94,7 +95,6 @@ contract MetoBadge is ERC1155, Ownable {
             );
     }
 
-
     /**
      * @notice SOULBOUND: Block transfers.
      */
@@ -124,5 +124,4 @@ contract MetoBadge is ERC1155, Ownable {
     function approve(address to, uint256 tokenId) public virtual override {
         revert Soulbound();
     }
-
 }
