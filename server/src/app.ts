@@ -6,6 +6,7 @@ import logger from 'koa-logger';
 import onerror from 'koa-onerror';
 import accountRouter from './router/accountRouter';
 import frameRouter from './router/frameRouter';
+import helloworldRouter from './router/helloworldRouter';
 require('dotenv').config()
 // export const privatekey = process.env.PRIVATE_KEY as string
 // console.log(privatekey)
@@ -47,3 +48,4 @@ app.use(logger())
 
 app.use(accountRouter.routes())
 app.use(frameRouter.routes())
+app.use(helloworldRouter.routes())
