@@ -35,7 +35,7 @@ export const validate: (owners) => Promise<String> = async (owners) => {
 export const getAccount = async (fid: string, owners) => {
     let account = accountMap[fid.toLowerCase()]
     if (account) {
-        createAccount(fid, owners)
+        
         return null
     } else {
         return account

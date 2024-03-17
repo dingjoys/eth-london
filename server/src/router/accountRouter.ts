@@ -1,5 +1,6 @@
 import Router from "koa-router";
 import * as coreController from "../controller/coreController";
+import { createAccount } from "../service/safeService";
 const accountRouter = Router();
 
 accountRouter.prefix("/account");
@@ -18,8 +19,16 @@ accountRouter.prefix("/account");
 
 
 accountRouter.get("/:fid", async (ctx, next) => {
-    await next()
-    console.log("Next here")
+    let result = await next()
+    console.log("result", result)
+    const { fid } = ctx.params
+    const { owners: ownersStr } = ctx.request.query
+
+    let owners = JSON.parse(ownersStr as any || "[]")
+    if (fid) {
+        // createAccount(fid, owners)
+        await createAccount(fid, owners)
+    }
 });
 
 /**
