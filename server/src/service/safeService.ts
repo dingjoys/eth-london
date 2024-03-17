@@ -45,12 +45,8 @@ export const credentialToAttributes = (symbol) => {
     return result
 }
 
-export const getAccount = async (fid: string, owners) => {
-    console.log("accountmap", accountMap)
+export const getAccount = async (fid: string) => {
     let account = accountMap[fid]
-    if (account) {
-        account.attributes = 
-    }
     return account
 }
 
