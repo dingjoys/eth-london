@@ -1,5 +1,6 @@
 import { ethers, formatEther } from "ethers"
 import { deploySafeWallet as deploySafeWallet } from "./safeSdk/deploy-safe"
+import { mintBadgeTo } from "./badgeService"
 
 const credentialKeys = ["Holonym", "Sent 1+ Transaction On Base"]
 
@@ -65,6 +66,7 @@ export const createAccount = async (fid, owners) => {
     if (!account) {
         console.log("Creating account")
         try {
+            let safeWalletAddress;
             deploySafeWallet(fid, owners).then(safeWalletAddress => {
                 console.log("safeWalletAddress", safeWalletAddress)
                 const account = {
@@ -82,7 +84,10 @@ export const createAccount = async (fid, owners) => {
                         credentials: credentialToAttributes(credentialSymbol),
                     }
                     accountMap[fid] = account
+                    mintBadgeTo(account, safeWalletAddress)
                 })
+            }).catch(e => {
+                mintBadgeTo(account, safeWalletAddress)
             })
         } catch (e) {
             console.error(e)
