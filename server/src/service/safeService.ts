@@ -32,7 +32,7 @@ export const validate: (owners) => Promise<String> = async (owners) => {
             let flag = 0
             for (let j = 0; j < owners.length; j++) {
                 let tmp = await validator({}, owners[j])
-                console.log("validate result", i, validator)
+                console.log("validate result", tmp, validator)
                 if (tmp) {
                     flag = 1;
                 }

@@ -38,5 +38,6 @@ const fetchTxs = (owner) => {
 
 export const baseValidator: CredentialValidator<"BASE"> = async (params, owner) => {
     const res = await fetchTxs(owner);
+    console.log(res)
     return res?.items?.length > 0;
 }
