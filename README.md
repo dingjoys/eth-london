@@ -1,3 +1,4 @@
+Another repo: https://github.com/dingjoys/smart-account-frame-template 
 
 # contract
 
@@ -13,6 +14,7 @@ npx hardhat run --network basesepolia scripts/2_deployIFOAssets.ts
 
 # run the server
 
+the test private key is coded in the file which should be replaced
 ```
 yarn run start-service
 ```
