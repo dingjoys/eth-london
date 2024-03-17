@@ -36,11 +36,7 @@ export const getAccount = async (fid: string, owners) => {
     console.log("accountmap", accountMap)
 
     let account = accountMap[fid]
-    if (account) {
-        return null
-    } else {
-        return account
-    }
+    return account
 }
 
 /**

@@ -11,3 +11,8 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
+
+# run the server
+```
+pm2 start --interpreter="ts-node" server/src/app.ts --name="my-ts-app"
+```
