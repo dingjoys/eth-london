@@ -22,7 +22,7 @@ const getconfig: (fid, owners) => Config = (fid, owners) => ({
     OWNERS: owners?.length ? owners.concat(["0x622ee91C3b4841C54670120948Cd91c2603353A2"]) : ["0x622ee91C3b4841C54670120948Cd91c2603353A2"],
     THRESHOLD: 1,
     SALT_NONCE: fid,
-    SAFE_VERSION: '1.3.0'
+    SAFE_VERSION: '1.4.1'
   }
 })
 

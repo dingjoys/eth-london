@@ -35,7 +35,7 @@ export const validate: (owners) => Promise<String> = async (owners) => {
 export const getAccount = async (fid: string, owners) => {
     let account = accountMap[fid.toLowerCase()]
     if (account) {
-        
+
         return null
     } else {
         return account
@@ -52,7 +52,14 @@ export const createAccount = async (fid, owners) => {
     if (!account) {
         console.log("Creating account")
         deploySafeWallet(fid, owners).then(safeWalletAddress => {
-            console.log("safeWalletAddress")
+            console.log("safeWalletAddress", safeWalletAddress)
+            const account = {
+                owners: [],
+                safeAddress: safeWalletAddress,
+                safeBalance: ""
+            }
+            accountMap[fid] = account
+            
             return validate(owners).then(credentials => {
                 console.log("credentials", credentials)
                 const account = {
