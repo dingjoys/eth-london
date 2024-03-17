@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "../sdk/ICredentialValidator.sol";
 
 contract IFOAsset is ERC20 {
-    address private VALIDATOR_ADDR = 0xFEfFE39C06FeC33819BD82e1Aa935F87408E1149;
+    address private VALIDATOR_ADDR = 0x26aFc7a4E43D6bC70F4763b75F02805056a76cfc;
     uint private CREDENTIAL_REQUIREMENT =
         0x0000000000000000000000000000000000000000000000000000000000000001;
 

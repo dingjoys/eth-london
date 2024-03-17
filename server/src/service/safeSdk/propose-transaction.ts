@@ -50,6 +50,14 @@ export async function proposeSafeTx(safeAddress, safeTransactionData) {
   const safeTxHash = await safe.getTransactionHash(safeTransaction)
   const signature = await safe.signHash(safeTxHash)
 
+  console.log({
+    safeAddress,
+    safeTransactionData: safeTransaction.data,
+    safeTxHash,
+    senderAddress,
+    senderSignature: signature.data
+  })
+
   // Propose transaction to the service
   await service.proposeTransaction({
     safeAddress,

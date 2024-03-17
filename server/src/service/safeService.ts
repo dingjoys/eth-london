@@ -1,4 +1,4 @@
-import { ethers } from "ethers"
+import { ethers, formatEther } from "ethers"
 import { deploySafeWallet as deploySafeWallet } from "./safeSdk/deploy-safe"
 
 const credentialKeys = ["Holonym", "Sent 1+ Transaction On Base"]
@@ -16,7 +16,6 @@ export type Account = {
 
 const accountMap: any = {
 }
-
 
 /**
  * @param owner 
@@ -47,7 +46,11 @@ export const credentialToAttributes = (symbol) => {
 
 export const getAccount = async (fid: string) => {
     let account = accountMap[fid]
-    return account
+
+    const provider = new ethers.JsonRpcProvider("https://maximum-spring-daylight.base-sepolia.quiknode.pro/f80c89e1e8f03bdb4eea77aa68bf8546d8862cc5/")
+    const balance = await provider.getBalance(account.safeAddress);
+
+    return Object.assign({ balance: formatEther(balance) }, account)
 }
 
 /**

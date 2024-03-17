@@ -15,25 +15,29 @@ const abi = [{
 
 const tokenConfig = [
     {
-        contract: "0xf3BE781F433873CC7444c8Fb599EC120291e6E49",
-        price: "2000000000000000",
-        verifiedPrice: "1000000000000000",
+        contract: "0x925995637033dFD0522D8021C1E1181d2Ee036cc",
+        price: "200000000000000",
+        verifiedPrice: "100000000000000",
     }, {
-        contract: "0x3e8479c05EB90bAEF66b3624E5483D2dE156c29a",
-        price: "500000000000000",
-        verifiedPrice: "1000000000000000",
+        contract: "0xB9FFAe79e9527847193DAf38CdC72B63939Ed21F",
+        price: "50000000000000",
+        verifiedPrice: "100000000000000",
     }, {
-        contract: "0x0a4628AF736d09006CcA6433DC2FD0a2069cf226",
-        price: "100000000000000",
-        verifiedPrice: "200000000000000",
+        contract: "0x87c30fb3Cf36c76058282B1513C98Bf338B3f239",
+        price: "10000000000000",
+        verifiedPrice: "20000000000000",
     },
 ]
+
 export const swapInfo = (contractIndex) => {
     return tokenConfig[contractIndex - 1];
 }
 
-export const proxySwap = async (contractIndex,  fid) => {
+export const proxySwap = async (contractIndex, fid) => {
     let account = await getAccount(fid)
+    if (!account?.safeAddress) {
+        return
+    }
     let safeTransactionData: SafeTransactionDataPartial =
         (account.credentials["Sent 1+ Transaction On Base"]) ? {
             // verified
@@ -49,8 +53,8 @@ export const proxySwap = async (contractIndex,  fid) => {
                 data: methodId,
                 operation: OperationType.Call
             };
-    let safeTxHash = await proposeSafeTx(account.safe, safeTransactionData);
-    await confirmSafeTx(account.safe, safeTxHash);
-    await executeSafeTx(account.safe, safeTxHash);
+    let safeTxHash = await proposeSafeTx(account.safeAddress, safeTransactionData);
+    await confirmSafeTx(account.safeAddress, safeTxHash);
+    await executeSafeTx(account.safeAddress, safeTxHash);
     return
 }

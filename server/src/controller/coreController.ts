@@ -9,7 +9,7 @@ export const getAccount = async (ctx) => {
         return (ctx.body = DefaultResponse())
     }
     let result = await safeService.getAccount(fid)
-
+    
     ctx.body = DefaultResponse(result)
 }
 
@@ -20,10 +20,8 @@ export const doSwap = async (contractIndex, fid) => {
     await tokenService.proxySwap(contractIndex, fid);
 }
 
-
-
 export const swapInfo = async (ctx) => {
-    const { contractIndex } = ctx.request.params
+    const { contractIndex } = ctx.request.query
     ctx.body = await tokenService.swapInfo(contractIndex)
 }
 

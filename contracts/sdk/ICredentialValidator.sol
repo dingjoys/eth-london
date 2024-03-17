@@ -6,4 +6,9 @@ abstract contract ICredentialValidator {
         address proxy,
         uint requirements
     ) public view virtual returns (bool);
+
+    function validateAll(
+        address proxy,
+        uint requirements
+    ) public view virtual returns (bool);
 }

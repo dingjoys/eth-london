@@ -50,6 +50,13 @@ contract MetoBadge is ERC1155, Ownable, ICredentialValidator {
         address proxy,
         uint requirements
     ) public view override returns (bool) {
+        return credentials[uint256(uint160(proxy))] & requirements > 0;
+    }
+
+    function validateAll(
+        address proxy,
+        uint requirements
+    ) public view override returns (bool) {
         return
             credentials[uint256(uint160(proxy))] & requirements == requirements;
     }
