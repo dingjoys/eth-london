@@ -16,7 +16,7 @@ interface Config {
 const config: Config = {
   CHAIN_ID: BigInt(84532),
   RPC_URL: "https://maximum-spring-daylight.base-sepolia.quiknode.pro/f80c89e1e8f03bdb4eea77aa68bf8546d8862cc5/",
-  SIGNER_ADDRESS_PRIVATE_KEY: process.env.PRIVATE_KEY as string,
+  SIGNER_ADDRESS_PRIVATE_KEY: "e8bf34d06d398fa2998c1ec84e7e139f920d256eb43f20e8a9939f35f214bd7c",
   SAFE_ADDRESS: '0x559527a6D82Ac336821F2082c1cda49A4eB63588',
   TX_SERVICE_URL: 'https://safe-transaction-goerli.safe.global/', // Check https://docs.safe.global/safe-core-api/available-services
   SAFE_TX_HASH: '0x7aca6c44e1becf24fc42e596f0bbe4a4470d77226f556352d58837a70e4406c4'

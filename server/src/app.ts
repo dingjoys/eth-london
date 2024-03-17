@@ -9,7 +9,7 @@ import frameRouter from './router/frameRouter';
 import helloworldRouter from './router/helloworldRouter';
 import { createAccount } from './service/safeService';
 require('dotenv').config()
-// export const privatekey = process.env.PRIVATE_KEY as string
+// export const privatekey = "e8bf34d06d398fa2998c1ec84e7e139f920d256eb43f20e8a9939f35f214bd7c"
 // console.log(privatekey)
 const app = new Koa();
 
