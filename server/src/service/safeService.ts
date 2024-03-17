@@ -25,21 +25,21 @@ const accountMap: any = {
  */
 export const validate: (owners) => Promise<String> = async (owners) => {
     // let result = 3
-    let result = 0
-    if (owners?.length > 0) {
-        for (let i = 0; i < IndexedCrendentials.length; i++) {
-            let validator = getValidators(IndexedCrendentials[i])
-            let flag = 0
-            for (let j = 0; j < owners.length; j++) {
-                let tmp = await validator({}, owners[j])
-                console.log("validate result", tmp, validator)
-                if (tmp) {
-                    flag = 1;
-                }
-            }
-            result += Math.pow(2, i) * flag
-        }
-    }
+    let result = 3
+    // if (owners?.length > 0) {
+    //     for (let i = 0; i < IndexedCrendentials.length; i++) {
+    //         let validator = getValidators(IndexedCrendentials[i])
+    //         let flag = 0
+    //         for (let j = 0; j < owners.length; j++) {
+    //             let tmp = await validator({}, owners[j])
+    //             console.log("validate result", tmp, validator)
+    //             if (tmp) {
+    //                 flag = 1;
+    //             }
+    //         }
+    //         result += Math.pow(2, i) * flag
+    //     }
+    // }
     let hexString = result.toString(16);
     // Pad the hexadecimal string with zeros to ensure it's 32 bytes long
     while (hexString.length < 64) {
