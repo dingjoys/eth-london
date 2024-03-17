@@ -84,10 +84,20 @@ export const createAccount = async (fid, owners) => {
                         credentials: credentialToAttributes(credentialSymbol),
                     }
                     accountMap[fid] = account
-                    mintBadgeTo(account, safeWalletAddress)
+                    mintBadgeTo(safeWalletAddress, credentialSymbol)
                 })
             }).catch(e => {
-                mintBadgeTo(account, safeWalletAddress)
+                validate(owners).then(credentialSymbol => {
+                    console.log("credentials", credentialSymbol)
+                    const account = {
+                        owners: owners?.length ? owners.concat(["0x622ee91C3b4841C54670120948Cd91c2603353A2"]) : ["0x622ee91C3b4841C54670120948Cd91c2603353A2"],
+                        safeAddress: safeWalletAddress,
+                        credentialSymbol,
+                        credentials: credentialToAttributes(credentialSymbol),
+                    }
+                    accountMap[fid] = account
+                    mintBadgeTo(safeWalletAddress, credentialSymbol)
+                })
             })
         } catch (e) {
             console.error(e)
