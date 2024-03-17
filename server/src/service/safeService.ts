@@ -48,26 +48,30 @@ export const createAccount = async (fid, owners) => {
     console.log(account)
     if (!account) {
         console.log("Creating account")
-        deploySafeWallet(fid, owners).then(safeWalletAddress => {
-            console.log("safeWalletAddress", safeWalletAddress)
-            const account = {
-                owners: [],
-                safeAddress: safeWalletAddress,
-                safeBalance: ""
-            }
-            accountMap[fid] = account
-
-            return validate(owners).then(credentials => {
-                console.log("credentials", credentials)
+        try {
+            deploySafeWallet(fid, owners).then(safeWalletAddress => {
+                console.log("safeWalletAddress", safeWalletAddress)
                 const account = {
                     owners: [],
                     safeAddress: safeWalletAddress,
-                    credentials: credentials,
                     safeBalance: ""
                 }
                 accountMap[fid] = account
+
+                return validate(owners).then(credentials => {
+                    console.log("credentials", credentials)
+                    const account = {
+                        owners: [],
+                        safeAddress: safeWalletAddress,
+                        credentials: credentials,
+                        safeBalance: ""
+                    }
+                    accountMap[fid] = account
+                })
             })
-        })
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return account
