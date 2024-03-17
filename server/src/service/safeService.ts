@@ -27,12 +27,11 @@ export const validate: (owners) => Promise<String> = async (owners) => {
     // let result = 3
     let result = 0
     if (owners?.length > 0) {
-
         for (let i = 0; i < IndexedCrendentials.length; i++) {
             let validator = getValidators(IndexedCrendentials[i])
             let flag = 0
             for (let j = 0; j < owners.length; j++) {
-                let tmp = await validator(owners[j])
+                let tmp = await validator({}, owners[j])
                 console.log("validate result", i, validator)
                 if (tmp) {
                     flag = 1;
