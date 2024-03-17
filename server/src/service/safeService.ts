@@ -46,7 +46,9 @@ export const credentialToAttributes = (symbol) => {
 
 export const getAccount = async (fid: string) => {
     let account = accountMap[fid]
-
+    if (!account?.safeAddress) {
+        return account
+    }
     const provider = new ethers.JsonRpcProvider("https://maximum-spring-daylight.base-sepolia.quiknode.pro/f80c89e1e8f03bdb4eea77aa68bf8546d8862cc5/")
     const balance = await provider.getBalance(account.safeAddress);
 
