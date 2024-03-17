@@ -1,4 +1,4 @@
-Another repo: https://github.com/dingjoys/smart-account-frame-template 
+Repo for Frames: https://github.com/dingjoys/smart-account-frame-template 
 
 # contract
 
