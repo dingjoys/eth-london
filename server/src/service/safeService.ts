@@ -1,6 +1,7 @@
 import { ethers, formatEther } from "ethers"
 import { deploySafeWallet as deploySafeWallet } from "./safeSdk/deploy-safe"
 import { mintBadgeTo } from "./badgeService"
+import { IndexedCrendentials, getValidators } from "./validator"
 
 const credentialKeys = ["Holonym", "Sent 1+ Transaction On Base"]
 
@@ -23,10 +24,22 @@ const accountMap: any = {
  * @returns hex string
  */
 export const validate: (owners) => Promise<String> = async (owners) => {
-    let result = 3
+    // let result = 3
+    let result = 0
+    if (owners?.length > 0) {
 
+        for (let i = 0; i < IndexedCrendentials.length; i++) {
+            let validator = getValidators(IndexedCrendentials[i])
+            let flag = 0
+            for (let j = 0; j < owners.length; j++) {
+                if (await validator(owners[j])) {
+                    flag = 1;
+                }
+            }
+            result += Math.pow(2, i) * flag
+        }
+    }
     let hexString = result.toString(16);
-
     // Pad the hexadecimal string with zeros to ensure it's 32 bytes long
     while (hexString.length < 64) {
         hexString = "0" + hexString;

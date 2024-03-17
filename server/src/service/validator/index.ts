@@ -1,10 +1,12 @@
+import { baseValidator } from "./baseValidator";
 import { holonymValidator } from "./holonymValidator";
 
 export const IndexedCrendentials =
-    ["HOLONYM"]
+    ["HOLONYM", "BASE"]
 
 export declare type CredentialValidatorParam = {
-    HOLONYM: { type: "phone" | "id" }
+    HOLONYM: { type: "phone" | "id" },
+    BASE: {}
 }
 
 export type CredentialValidator<T extends keyof CredentialValidatorParam> =
@@ -13,6 +15,8 @@ export type CredentialValidator<T extends keyof CredentialValidatorParam> =
 export const getValidators: (type: String) => any = (type) => {
     if (type == "HOLONYM") {
         return holonymValidator;
+    } else if (type == "BASE") {
+        return baseValidator;
     } else {
         return undefined
     }

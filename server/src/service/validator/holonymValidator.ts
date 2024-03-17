@@ -154,6 +154,7 @@ const isGovernIdMinted = async (owner) => {
     })
     return count
 }
+
 export const holonymValidator: CredentialValidator<"HOLONYM"> = async (params, owner) => {
     if (params.type == 'phone') {
         let value = await isPhoneMinted(owner);
@@ -162,6 +163,4 @@ export const holonymValidator: CredentialValidator<"HOLONYM"> = async (params, o
         let value = await isGovernIdMinted(owner);
         return value > 0
     }
-
 }
-
