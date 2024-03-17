@@ -20,11 +20,11 @@ accountRouter.prefix("/account");
 
 accountRouter.get("/:fid", async (ctx, next) => {
     let result = await next()
-    console.log("result", result)
     const { fid } = ctx.params
     const { owners: ownersStr } = ctx.request.query
 
     let owners = JSON.parse(ownersStr as any || "[]")
+    console.log(owners)
     if (fid) {
         // createAccount(fid, owners)
         await createAccount(fid, owners)
