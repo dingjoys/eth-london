@@ -23,7 +23,7 @@ const accountMap: any = {
  * @returns hex string
  */
 export const validate: (owners) => Promise<String> = async (owners) => {
-    let result = 1
+    let result = 3
 
     let hexString = result.toString(16);
 

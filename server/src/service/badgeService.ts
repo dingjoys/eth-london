@@ -24,8 +24,6 @@ const abi = [{
     "type": "function"
 }]
 
-
-
 export const getContract = (contractAddress, abi, providerOrSigner) => {
     return new ethers.Contract(contractAddress, abi, providerOrSigner);
 };
