@@ -5,19 +5,13 @@ import { deploySafeWallet as deploySafeWallet } from "./safeSdk/deploy-safe"
  */
 
 export type Account = {
-    owner,
+    owners,
     safeAddress,
     safeBalance,
     credentials
 }
 
 const accountMap: any = {
-    "0x622ee91c3b4841c54670120948cd91c2603353a2": {
-        owner: "0x622ee91c3b4841c54670120948cd91c2603353a2",
-        safeAddress: "0x559527a6D82Ac336821F2082c1cda49A4eB63588",
-        safeBalance: "",
-        credentials: 1
-    }
 }
 
 
@@ -25,7 +19,7 @@ const accountMap: any = {
  * @param owner 
  * @returns hex string
  */
-export const validate: (owner) => Promise<String> = async (owner) => {
+export const validate: (owners) => Promise<String> = async (owners) => {
     let result = 1
 
     let hexString = result.toString(16);
@@ -38,29 +32,37 @@ export const validate: (owner) => Promise<String> = async (owner) => {
     return "0x" + hexString;
 }
 
-export const getAccount = (owner: string) => {
-    let account = accountMap[owner.toLowerCase()]
-    return account
+export const getAccount = async (fid: string, owners) => {
+    let account = accountMap[fid.toLowerCase()]
+    if (account) {
+        createAccount(fid, owners)
+        return null
+    } else {
+        return account
+    }
 }
 
 /**
  * the new account is stored in memory
  * @returns safe account 
  */
-export const createAccount = async (_owner) => {
-    let owner = _owner.toLowerCase()
-    let account = accountMap[owner]
+export const createAccount = async (fid, owners) => {
+    let account = accountMap[fid]
     if (!account) {
-        const safeWalletAddress = await deploySafeWallet(owner);
-        const credentials = await validate(owner);
-        const account = {
-            owner,
-            safeAddress: safeWalletAddress,
-            credentials: credentials,
-            safeBalance: ""
-        }
-        accountMap[owner] = account
+        deploySafeWallet(fid, owners).then(safeWalletAddress => {
+            console.log("safeWalletAddress")
+            return validate(owners).then(credentials => {
+                console.log("credentials", credentials)
+                const account = {
+                    owners: [],
+                    safeAddress: safeWalletAddress,
+                    credentials: credentials,
+                    safeBalance: ""
+                }
+                accountMap[fid] = account
+            })
+        })
     }
-    
+
     return account
 }

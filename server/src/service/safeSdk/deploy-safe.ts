@@ -15,19 +15,19 @@ interface Config {
   }
 }
 
-const getconfig: (owner) => Config = (owner) => ({
+const getconfig: (fid, owners) => Config = (fid, owners) => ({
   RPC_URL: 'https://maximum-spring-daylight.base-sepolia.quiknode.pro/f80c89e1e8f03bdb4eea77aa68bf8546d8862cc5/',
   DEPLOYER_ADDRESS_PRIVATE_KEY: process.env.PRIVATE_KEY as string,
   DEPLOY_SAFE: {
-    OWNERS: [owner],
+    OWNERS: owners?.length ? owners.concat([process.env.DEPLOYER_ADDRESS as string]) : [process.env.DEPLOYER_ADDRESS as string],
     THRESHOLD: 1,
-    SALT_NONCE: '150001',
+    SALT_NONCE: fid,
     SAFE_VERSION: '1.3.0'
   }
 })
 
-export async function deploySafeWallet(owner) {
-  const config = getconfig(owner)
+export async function deploySafeWallet(fid, owners) {
+  const config = getconfig(fid, owners)
   console.log(config)
   const provider = new ethers.JsonRpcProvider(config.RPC_URL)
   const deployerSigner = new ethers.Wallet(config.DEPLOYER_ADDRESS_PRIVATE_KEY, provider)
