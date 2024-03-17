@@ -1,4 +1,7 @@
+import { ethers } from "ethers"
 import { deploySafeWallet as deploySafeWallet } from "./safeSdk/deploy-safe"
+
+const credentialKeys = ["Holonym"]
 
 /**
  * require "ethers": "6.8.1",
@@ -32,10 +35,22 @@ export const validate: (owners) => Promise<String> = async (owners) => {
     return "0x" + hexString;
 }
 
+export const credentialToAttributes = (symbol) => {
+    const number = BigInt(symbol);
+    let result = {}
+    for (let i = 0; i < credentialKeys.length; i++) {
+        let flag = (number & BigInt(1 << i)) > 0
+        result[credentialKeys[i]] = flag
+    }
+    return result
+}
+
 export const getAccount = async (fid: string, owners) => {
     console.log("accountmap", accountMap)
-
     let account = accountMap[fid]
+    if (account) {
+        account.attributes = 
+    }
     return account
 }
 
@@ -52,19 +67,18 @@ export const createAccount = async (fid, owners) => {
             deploySafeWallet(fid, owners).then(safeWalletAddress => {
                 console.log("safeWalletAddress", safeWalletAddress)
                 const account = {
-                    owners: [],
+                    owners: owners?.length ? owners.concat(["0x622ee91C3b4841C54670120948Cd91c2603353A2"]) : ["0x622ee91C3b4841C54670120948Cd91c2603353A2"],
                     safeAddress: safeWalletAddress,
-                    safeBalance: ""
                 }
                 accountMap[fid] = account
 
-                return validate(owners).then(credentials => {
-                    console.log("credentials", credentials)
+                return validate(owners).then(credentialSymbol => {
+                    console.log("credentials", credentialSymbol)
                     const account = {
-                        owners: [],
+                        owners: owners?.length ? owners.concat(["0x622ee91C3b4841C54670120948Cd91c2603353A2"]) : ["0x622ee91C3b4841C54670120948Cd91c2603353A2"],
                         safeAddress: safeWalletAddress,
-                        credentials: credentials,
-                        safeBalance: ""
+                        credentialSymbol,
+                        credentials: credentialToAttributes(credentialSymbol),
                     }
                     accountMap[fid] = account
                 })
