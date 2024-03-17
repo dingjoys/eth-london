@@ -1,7 +1,7 @@
 import { ethers } from "ethers"
 import { deploySafeWallet as deploySafeWallet } from "./safeSdk/deploy-safe"
 
-const credentialKeys = ["Holonym"]
+const credentialKeys = ["Holonym", "Sent 1+ Transaction On Base"]
 
 /**
  * require "ethers": "6.8.1",

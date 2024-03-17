@@ -18,7 +18,6 @@ async function main() {
 	const validationResult = await metobadge.validate("0x559527a6D82Ac336821F2082c1cda49A4eB63588", 1);
 	console.log("validation result", validationResult.toString());
 
-
 	const svg = await metobadge.generateSVG(BigNumber.from("0x559527a6D82Ac336821F2082c1cda49A4eB63588").toString())
 	console.log("image", svg)
 }

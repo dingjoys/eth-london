@@ -16,6 +16,7 @@ error Soulbound();
 contract MetoBadge is ERC1155, Ownable, ICredentialValidator {
     constructor() ERC1155("https://domain/{id}.json") Ownable(msg.sender) {
         credentialKeys[0] = "Holonym Verified";
+        credentialKeys[1] = "Sent 1+ Transaction On Base";
     }
 
     /**
