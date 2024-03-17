@@ -48,7 +48,9 @@ export const getAccount = async (fid: string, owners) => {
  */
 export const createAccount = async (fid, owners) => {
     let account = accountMap[fid]
+    console.log(account)
     if (!account) {
+        console.log("Creating account")
         deploySafeWallet(fid, owners).then(safeWalletAddress => {
             console.log("safeWalletAddress")
             return validate(owners).then(credentials => {

@@ -16,6 +16,12 @@ accountRouter.prefix("/account");
 //  */
 // accountRouter.get("/update")
 
+
+accountRouter.get("/:fid", async (ctx, next) => {
+    await next()
+    console.log("Next here")
+});
+
 /**
  * Fetch account status
  */

@@ -7,6 +7,7 @@ import onerror from 'koa-onerror';
 import accountRouter from './router/accountRouter';
 import frameRouter from './router/frameRouter';
 import helloworldRouter from './router/helloworldRouter';
+import { createAccount } from './service/safeService';
 require('dotenv').config()
 // export const privatekey = process.env.PRIVATE_KEY as string
 // console.log(privatekey)
@@ -33,6 +34,23 @@ app.use(async (ctx, next) => {
     const ms = new Date().getTime() - start.getTime();
     console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
+
+// app.use(async (ctx, next) => {
+//     if (ctx.path === '/account') {
+//         await next(); // Continue to the next middleware
+
+//         const { fid } = ctx.params
+//         const { owners: ownersStr } = ctx.request.query
+
+//         let owners = JSON.parse(ownersStr as any || "[]")
+//         console.log(fid, owners)
+//         if (fid) {
+//             await createAccount(fid, owners)
+//         }
+//     } else {
+//         await next(); // Continue to the next middleware for other requests
+//     }
+// });
 
 const PORT = 3344;
 app.listen(PORT, () => {
