@@ -1,4 +1,4 @@
-import { EthersAdapter, SafeAccountConfig, SafeFactory } from '@safe-global/protocol-kit'
+import { EthersAdapter, SafeAccountConfig, SafeFactory, predictSafeAddress } from '@safe-global/protocol-kit'
 import { SafeVersion } from '@safe-global/safe-core-sdk-types'
 import { ethers } from 'ethers'
 
@@ -65,13 +65,18 @@ export async function deploySafeWallet(fid, owners) {
   }
 
   // Deploy Safe
-  const safe = await safeFactory.deploySafe({
-    safeAccountConfig,
-    saltNonce,
-    callback
-  })
+  try {
+    const safe = await safeFactory.deploySafe({
+      safeAccountConfig,
+      saltNonce,
+      callback
+    })
+    console.log('Deployed Safe:', await safe.getAddress())
+  } catch (e) {
+    console.error(e)
+  }
 
-  console.log('Deployed Safe:', await safe.getAddress())
-  return await safe.getAddress()
+
+  return predictedDeploySafeAddress
 }
 

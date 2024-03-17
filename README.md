@@ -13,6 +13,7 @@ npx hardhat ignition deploy ./ignition/modules/Lock.ts
 ```
 
 # run the server
+
 ```
 yarn run start-service
 ```
